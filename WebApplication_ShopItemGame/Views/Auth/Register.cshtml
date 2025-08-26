@@ -1,0 +1,59 @@
+﻿@model WebApplication_ShopItemGame.Models.User
+
+@{
+    ViewData["Title"] = "Register";
+}
+
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+        <div class="col-lg-7 d-none d-lg-block text-center">
+            <img src="~/Img/logo2.png" class="img-fluid" style="max-width: 450px;" alt="FeelzShop โลโก้" />
+        </div>
+
+        <div class="col-12 col-lg-5 bg-white shadow rounded p-4">
+            <h1 class="text-main fw-bold mb-3">FeelzShop</h1>
+            <h3 class="text-secondary mb-4">สมัครสมาชิก</h3>
+
+            <form asp-action="Register" method="post" novalidate>
+                <div class="form-floating mb-3">
+                    <input asp-for="Username" class="form-control" id="Username" placeholder="ชื่อผู้ใช้" required />
+                    <label for="Username">ชื่อผู้ใช้</label>
+                    <span asp-validation-for="Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="PasswordHash" type="password" class="form-control" id="PasswordHash" placeholder="รหัสผ่าน" required />
+                    <label for="PasswordHash">รหัสผ่าน</label>
+                    <span asp-validation-for="PasswordHash" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="ConfirmPassword" type="password" class="form-control" id="ConfirmPassword" placeholder="ยืนยันรหัสผ่าน" required />
+                    <label for="ConfirmPassword">ยืนยันรหัสผ่าน</label>
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input asp-for="Email" type="email" class="form-control" id="Email" placeholder="อีเมล" required />
+                    <label for="Email">อีเมล</label>
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn bg-colorPJ w-100 mb-3">
+                    <i class="fa-solid fa-user"></i> สมัครสมาชิก
+                </button>
+            </form>
+
+            <div class="text-center mb-3">
+                <a asp-controller="Auth" asp-action="Login"
+                   class="btn btn-outline-secondary w-100 fw-semibold text-decoration-none d-inline-block text-center">
+                    <i class="fa-solid fa-arrow-left"></i> กลับไปหน้าเข้าสู่ระบบ
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

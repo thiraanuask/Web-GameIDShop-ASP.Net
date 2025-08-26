@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Feelz Shop</title>
+
+    <link rel="shortcut icon" href="~/favicon2.ico" type="image/x-icon" />
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/table.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true"/>
+    <link rel="stylesheet" href="~/WebApplication_ShopItemGame.styles.css" asp-append-version="true" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Itim&display=swap" rel="stylesheet">
+
+
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-dark border-bottom box-shadow mb-3">
+            <div class="container-fluid">
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/Img/Feelz-Main-Logo.png" alt="Feelz Shop Logo" height="60" class="d-inline-block align-text-top" />
+                    
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+                        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item ms-lg-3">
+                            <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">
+                                <i class="fa-solid fa-house"></i> Home
+                            </a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a class="nav-link" asp-area="" asp-controller="Deposit" asp-action="Index">
+                                <i class="fa-solid fa-money-check-dollar fa-flip" style="--fa-animation-duration: 3s;"></i> Deposit
+                            </a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a class="nav-link" asp-area="" asp-controller="Shop" asp-action="Index">
+                                <i class="fa-solid fa-cart-shopping fa-shake"></i> Shop 
+                            </a>
+                        </li>
+                        <li class="nav-item ms-lg-3">
+                            <a class="nav-link" asp-area="" asp-controller="Shop" asp-action="Lottery">
+                                <i class="fa-solid fa-gamepad"></i> Lottery
+                            </a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto mb-3 mb-lg-0">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+
+                                <li class="nav-item align-self-center text-white mt-1 ms-3" style="background-color: var(--main); border-radius: 1vh; padding: 5px 10px;">
+                                    <i class="fa-solid fa-sack-dollar"></i> <strong>@(((decimal?)ViewData["UserBalance"])?.ToString("N2") ?? "0.00")</strong>
+                                </li>
+
+                                <li class="nav-item me-3 position-relative">
+                                    <a class="nav-link" asp-controller="Cart" asp-action="Index" title="Cart">
+                                        <i class="fa-solid fa-cart-shopping fa-lg"></i>
+                                        @await Html.PartialAsync("_CartCountPartial")
+                                    </a>
+                                </li>
+
+                                <li class="nav-item dropdown" style="list-style:none;">
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        <i class="fa-solid fa-circle-user"></i> @User.Identity.Name
+                                    </a>
+                                    <ul class="dropdown-menu dropdown-menu-end shadow-sm p-4 pt-2 pb-2" aria-labelledby="userDropdown" style="border-radius: 1vh; border-bottom: 2.5px solid var(--main);">
+                                        <li><a class="dropdown-item mb-1" asp-area="" asp-controller="Profile" asp-action="Index"><small><i class="fa-solid fa-user-circle"></i> Username: @User.Identity.Name</small></a></li>
+                                        <li><a class="dropdown-item mb-1" asp-area="" asp-controller="Profile" asp-action="Points"><small><i class="fa-solid fa-sack-dollar"></i> Points: @(((decimal?)ViewData["UserBalance"])?.ToString("N2") ?? "0.00")</small></a></li>
+                                        <li><hr class="dropdown-divider" /></li>
+                                        <li><a class="dropdown-item mb-1" asp-area="" asp-controller="Profile" asp-action="Edit"><small><i class="fa-solid fa-user-circle"></i> Profile Info</small></a></li>
+                                        <li><a class="dropdown-item mb-1" asp-area="" asp-controller="Profile" asp-action="PurchaseHistory"><small><i class="fa-solid fa-history"></i> Purchase History</small></a></li>
+                                        <li>
+                                            <form method="post" asp-controller="Auth" asp-action="Logout" class="dropdown-item p-0 m-0">
+                                                <button type="submit" class="btn btn-link text-danger w-100 text-start"><small><i class="fa-solid fa-power-off"></i> Logout</small></button>
+                                            </form>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                            </ul>
+                        }
+                        else
+                        {
+                            <li class="nav-item d-flex align-items-center">
+                                <a href="@Url.Action("Login", "Auth")" class="btn btn-animation rounded me-2">
+                                    Login
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                    </a>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

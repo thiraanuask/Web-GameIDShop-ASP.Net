@@ -1,0 +1,58 @@
+﻿@{
+    ViewData["Title"] = "Login";
+}
+<div class="container py-5">
+    <div class="row justify-content-center align-items-center">
+
+        <div class="col-lg-7 d-none d-lg-block text-center">
+            <img src="~/Img/logo2.png" class="img-fluid" style="max-width: 450px;" alt="FeelzShop Logo" />
+        </div>
+
+        <div class="col-12 col-lg-5 bg-white shadow rounded p-4">
+            <h1 class="text-main fw-bold mb-3">FeelzShop</h1>
+            <h3 class="text-secondary mb-4">เข้าสู่ระบบ</h3>
+
+            <form asp-action="Login" method="post" novalidate>
+                <div class="form-floating mb-3">
+                    <input type="text" class="form-control" id="Username" name="username" placeholder="ชื่อผู้ใช้" required>
+                    <label for="Username">ชื่อผู้ใช้</label>
+                </div>
+
+                <div class="form-floating mb-3">
+                    <input type="password" class="form-control" id="Password" name="password" placeholder="รหัสผ่าน" required>
+                    <label for="Password">รหัสผ่าน</label>
+                </div>
+
+                <div class="mb-3 text-center">
+                    <div id="captcha" class="g-recaptcha" data-theme="light" style="transform: scale(0.77); transform-origin: 0 0;"></div>
+                </div>
+
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                            {
+                                <li>@error.ErrorMessage</li>
+                            }
+                        </ul>
+                    </div>
+                }
+
+                <button type="submit" class="btn btn-cool w-100 mb-3" style="align-content: center">
+                    <i class="fa-solid fa-arrow-right"></i> เข้าสู่ระบบ
+                </button>
+            </form>
+
+            <div class="text-center mb-3">
+                <a asp-controller="Auth" asp-action="Register"
+                   class="btn btn-outline-secondary w-100 mb-3 fw-semibold text-black text-decoration-none d-inline-block text-center">
+                    <i class="fa-solid fa-user"></i> สมัครสมาชิก
+                </a>
+            </div>
+
+  
+
+        </div>
+    </div>
+</div>

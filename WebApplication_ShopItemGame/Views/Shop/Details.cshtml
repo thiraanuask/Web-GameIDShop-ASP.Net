@@ -1,0 +1,125 @@
+﻿@model WebApplication_ShopItemGame.Models.Product
+
+@{
+    ViewData["Title"] = "Detail";
+}
+
+<div class="container-fluid p-4">
+    <div class="container-sm ps-0 pe-0 ps-lg-4 pe-lg-4">
+        <div class="row">
+            <div class="col-12 col-lg-6 p-2">
+                <img src="@Url.Content("~/Img/" + Model.ImageUrl + ".png")" alt="@Model.Name" class="w-100 img-fluid rounded" />
+            </div>
+            <div class="col-12 col-lg-6 p-2">
+                <div class="bg-white p-4" style="border-radius: 2vh;">
+                    <h2 class="text-break">@Model.Name</h2>
+                    <hr class="m-0 mb-3" style="border: black solid 1.8px;" />
+                    <h5 class="text-secondary">@Model.Description</h5>
+                    <hr class="m-0 mt-3 mb-3" style="border: black solid 1.8px;" />
+                    <div class="d-flex justify-content-between">
+                        <h5 class="text-end">สินค้าคงเหลือ <br class="d-block d-lg-none"> @Model.Stock ชิ้น</h5>
+                        <h5>ราคา <br class="d-block d-lg-none text-main"> @Model.Price.ToString("N2") บาท</h5>
+                    </div>
+
+                    <form asp-controller="Cart" asp-action="AddToCart" method="post" id="addToCartForm">
+                        <input type="hidden" name="productId" value="@Model.Id" />
+                        <input type="hidden" name="quantity" id="quantityInput" value="1" />
+
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="col-6">
+                                <div class="input-group">
+                                    <button type="button" class="btn btn-secondary text-strong" id="reduce"><b>-</b></button>
+                                    <input id="b_count" type="number" class="form-control text-center mb-0" value="1" min="1" max="@Model.Stock" />
+                                    <button type="button" class="btn btn-secondary text-strong" id="add"><b>+</b></button>
+                                </div>
+                            </div>
+                            <div class="col-5">
+                                <button type="submit" id="shop-btn" class="btn bg-colorPJ w-100" style="height: 100%;">
+                                    <i class="fa-duotone fa-cart-shopping-fast"></i>&nbsp;&nbsp;สั่งซื้อเลย
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="confirmOrderModal" tabindex="-1" aria-labelledby="confirmOrderModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content bg-colorPJ" style="border-radius: 1vh;">
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-white" id="confirmOrderModalLabel">ยืนยันสั่งซื้อสินค้า:</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body text-white" id="modalBodyContent" style="font-size: 1.2rem;">
+                @section Scripts {
+                    <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                            const quantityInput = document.getElementById('b_count');
+                            const quantityHidden = document.getElementById('quantityInput');
+                            const btnAdd = document.getElementById('add');
+                            const btnReduce = document.getElementById('reduce');
+                            const maxStock = parseInt(quantityInput.max);
+                            const minStock = parseInt(quantityInput.min);
+                            const form = document.getElementById('addToCartForm');
+
+                            btnAdd.addEventListener('click', () => {
+                                let current = parseInt(quantityInput.value);
+                                if (current < maxStock) {
+                                    quantityInput.value = current + 1;
+                                    quantityHidden.value = quantityInput.value;
+                                }
+                            });
+
+                            btnReduce.addEventListener('click', () => {
+                                let current = parseInt(quantityInput.value);
+                                if (current > minStock) {
+                                    quantityInput.value = current - 1;
+                                    quantityHidden.value = quantityInput.value;
+                                }
+                            });
+
+                            quantityInput.addEventListener('input', () => {
+                                let val = parseInt(quantityInput.value);
+                                if (isNaN(val) || val < minStock) val = minStock;
+                                else if (val > maxStock) val = maxStock;
+                                quantityInput.value = val;
+                                quantityHidden.value = val;
+                            });
+
+                            const confirmModal = new bootstrap.Modal(document.getElementById('confirmOrderModal'));
+                            const modalBodyContent = document.getElementById('modalBodyContent');
+                            const modalConfirmBtn = document.getElementById('modalConfirmBtn');
+                           const productName = @Html.Raw(Json.Serialize(Model.Name));
+
+
+                            form.addEventListener('submit', function(event) {
+                                event.preventDefault();
+                                const qty = quantityInput.value;
+
+                                modalBodyContent.textContent = `${productName}\nจำนวน: ${qty} ชิ้น`;
+
+                                confirmModal.show();
+                            });
+
+                            modalConfirmBtn.addEventListener('click', () => {
+                                confirmModal.hide();
+                                form.submit();
+                            });
+                        });
+                    </script>
+                }
+            </div>
+            <div class="modal-footer border-0">
+                <button type="button" class="btn btn-success px-4" id="modalConfirmBtn">OK</button>
+                <button type="button" class="btn btn-danger px-4" data-bs-dismiss="modal">Cancel</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+

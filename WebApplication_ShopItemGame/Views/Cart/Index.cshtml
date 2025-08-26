@@ -1,0 +1,90 @@
+﻿@model List<WebApplication_ShopItemGame.Models.CartItem>
+
+<div class="container-fluid p-0 ">
+    <div class="container-sm  m-cent  p-0 pt-0 ">
+        <div class="container-sm ">
+            <div class="container-fluid">
+                <center>
+                    <div class="col-12 col-lg-12 bg-white shadow p-2" style="border-radius: 1vh;">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-center text-lg-start">
+                                <h3 class="text-white m-0" style="padding: 5px 10px; background-color:  #2c3e6e; border-radius: 1vh; width: fit-content;">
+                                    <i class="fa-solid fa-money-check-dollar fa-flip" style="--fa-animation-duration: 3s;"></i> Your Shopping Cart
+                                </h3>
+                            </div>
+                            <a asp-controller="Shop" asp-action="Index" class="btn btn-outline-warning align-self-end pe-4 ps-4 pt-2 pb-2 d-none d-lg-block" style="height: fit-content;">
+                                <b><i class="fa-regular fa-circle-left"></i> ย้อนกลับ</b>
+                            </a>
+                        </div>
+                    </div>
+                </center>
+
+
+                @if (Model == null || !Model.Any())
+                {
+                    <div class="container-fluid p-3">
+                        <div class="container">
+                            <div class="row justify-content-center">
+                                <div class="col-12 col-lg-6">
+                                    <div class="bg-light rounded-4 shadow-sm p-5 mt-5 d-flex flex-column align-items-center" style="border-radius: 2vh;">
+                                        <i class="fa-solid fa-cart-shopping fa-shake" style="font-size: 64px; color: #2c3e6e; margin-bottom: 1rem;"></i>
+
+                                        <p class="text-secondary fs-5 mb-0 text-center text-danger" style="font-weight: 500;">ไม่มีสินค้าในตะกร้าของคุณ</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                else
+                {
+                    <table class="table align-middle table-borderless custom-table">
+                        <thead>
+                            <tr>
+                                <th class="text-start">สินค้า</th>
+                                <th class="text-center">ราคา / ชิ้น</th>
+                                <th class="text-center">จำนวน</th>
+                                <th class="text-center">รวม</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @{
+                                decimal total = 0;
+                            }
+                            @foreach (var item in Model)
+                            {
+                                var subtotal = item.Product.Price * item.Quantity;
+                                total += subtotal;
+                                <tr>
+                                    <td class="text-start fw-semibold text-dark">@item.Product.Name</td>
+                                    <td class="text-center text-primary">@item.Product.Price.ToString("C")</td>
+                                    <td class="text-center">@item.Quantity</td>
+                                    <td class="text-center text-primary fw-semibold">@subtotal.ToString("C")</td>
+                                    <td class="text-center">
+                                        <a asp-action="Remove" asp-route-productId="@item.ProductId" class="btn btn-outline-danger btn-sm" title="ลบสินค้า">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </a>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="3" class="text-end">ยอดรวมทั้งหมด:</td>
+                                <td class="text-center">@total.ToString("C")</td>
+                                <td></td>
+                            </tr>
+                        </tfoot>
+                    </table>
+
+
+
+
+                    <a asp-controller="Order" asp-action="Checkout" class="btn btn-success">Proceed to Checkout</a>
+                }
+
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,65 @@
+﻿@model WebApplication_ShopItemGame.Models.User
+
+@{
+    ViewData["Title"] = "Deposit";
+}
+
+<div class="container-fluid p-0 ">
+    <div class="container-sm  m-cent  p-0 pt-0 ">
+        <div class="container-sm ">
+            <div class="container-fluid">
+                <center>
+                    <div class="col-12 col-lg-12 bg-white shadow p-2" style="border-radius: 1vh;">
+                        <div class="d-flex justify-content-between">
+                            <div class="text-center text-lg-start">
+                                <h3 class="text-white m-0 main-color" style="padding: 5px 10px; border-radius: 1vh; width: fit-content;">
+                                    <i class="fa-solid fa-money-check-dollar fa-flip" style="--fa-animation-duration: 3s;"></i> เติมเงิน
+                                </h3>
+                            </div>
+                            <a asp-controller="Home" asp-action="Index" class="btn btn-outline-warning align-self-end pe-4 ps-4 pt-2 pb-2 d-none d-lg-block" style="height: fit-content;">
+                                <b><i class="fa-regular fa-circle-left"></i> ย้อนกลับ</b>
+                            </a>
+                        </div>
+                    </div>
+                </center>
+                <div class="container-fluid p-3">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-8">
+                                <div class="bg-white rounded-4 shadow-lg p-5 mt-4" style="border-radius: 2vh;">
+                                    <h4 class="mb-4 text-center text-dark">เติมเงินเข้าสู่บัญชี</h4>
+
+                                    <p class="text-center text-muted mb-4">
+                                        ยอดเงินคงเหลือ: <strong class="text-success">@Model.Balance.ToString("C")</strong>
+                                    </p>
+
+                                    @if (TempData["Success"] != null)
+                                    {
+                                        <div class="alert alert-success text-center rounded-pill">
+                                            @TempData["Success"]
+                                        </div>
+                                    }
+
+                                    <form asp-action="Add" method="post">
+                                        <div class="mb-4">
+                                            <label for="amount" class="form-label fw-semibold">จำนวนเงินที่ต้องการเติม</label>
+                                            <input type="number" name="amount" id="amount" min="1" step="0.01"
+                                                   class="form-control form-control-lg rounded-3 shadow-sm" required />
+                                        </div>
+
+                                        <div class="d-grid">
+                                            <button type="submit" class="btn btn-dark btn-lg rounded-pill">
+                                                เติมเงิน
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

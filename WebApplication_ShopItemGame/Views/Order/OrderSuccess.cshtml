@@ -1,0 +1,59 @@
+﻿@model WebApplication_ShopItemGame.Models.Order
+
+@{
+    ViewData["Title"] = "Success";
+}
+<div class="container-fluid p-0">
+    <div class="container-sm m-cent p-0 pt-0">
+        <div class="container-sm">
+            <div class="container-fluid">
+                <center>
+                    <div class="col-12 col-lg-12 bg-white shadow p-2" style="border-radius: 1vh;">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div class="text-center text-lg-start">
+                                <h3 class="text-white m-0 main-color" style="padding: 5px 10px; border-radius: 1vh; width: fit-content;">
+                                    <i class="fa-solid fa-money-check-dollar fa-flip" style="--fa-animation-duration: 3s;"></i> รายการคำสั่งซื้อ
+                                </h3>
+                            </div>
+                            <a asp-controller="Shop" asp-action="Index" class="btn btn-outline-warning align-self-end pe-4 ps-4 pt-2 pb-2 d-none d-lg-block" style="height: fit-content;">
+                                <b><i class="fa-regular fa-circle-left"></i> ย้อนกลับ</b>
+                            </a>
+                        </div>
+                    </div>
+                </center>
+
+                <div class="container-fluid p-3">
+                    <div class="container">
+                        <div class="row justify-content-center">
+                            <div class="col-12 col-lg-8">
+                                <div class="bg-light rounded-4 shadow-lg p-5 mt-4" style="border-radius: 2vh;">
+                                    <div class="text-center text-lg-start ">
+                                        <h2 class="text-success mb-3">สั่งซื้อสำเร็จ</h2>
+                                        <p class="lead">
+                                            ขอบคุณสำหรับการสั่งซื้อ คุณสั่งสินค้า
+                                            <strong>@Model.OrderItems.Sum(i => i.Quantity)</strong> ชิ้น
+                                            รวมเป็นเงิน
+                                            <strong>@Model.TotalAmount.ToString("C")</strong>
+                                        </p>
+
+                                        <h3 class="mt-4 mb-3">รายละเอียดคำสั่งซื้อ</h3>
+                                        <ul class="list-group mb-4">
+                                            @foreach (var item in Model.OrderItems)
+                                            {
+                                                <li class="list-group-item d-flex align-items-center">
+                                                    <span style="flex: 2;">@item.Product.Name</span>
+                                                    <span style="flex: 1; text-align:center;">จำนวน: <strong>@item.Quantity</strong></span>
+                                                    <span style="flex: 1; text-align:right;">ราคา: <strong>@item.Price.ToString("C")</strong></span>
+                                                </li>
+                                            }
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
